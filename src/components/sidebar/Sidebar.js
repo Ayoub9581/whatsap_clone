@@ -23,6 +23,7 @@ const Sidebar = () => {
     return () => {
       unsubscribe();
     };
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="sidebar">

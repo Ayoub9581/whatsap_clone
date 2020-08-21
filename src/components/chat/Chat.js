@@ -4,10 +4,25 @@ import { Avatar, IconButton } from '@material-ui/core';
 import { AttachFile, SearchOutlined, MoreVert } from '@material-ui/icons/';
 import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import MicIcon from '@material-ui/icons/Mic';
+import { useParams } from 'react-router-dom';
+
+// database
+import db from './../../firebase';
 const Chat = () => {
   const [seed, setSeed] = useState('');
   const [input, setInput] = useState('');
-  useEffect(() => {}, []);
+  const { roomId } = useParams();
+  const [roomName, setRoomName] = useState('');
+  useEffect(() => {
+    if (roomId) {
+      db.collection('rooms')
+        .doc(roomId)
+        .onSnapshot((snapshot) => {
+          setRoomName(snapshot.data().name);
+        });
+    }
+    // eslint-disable-next-line
+  }, [roomId]);
 
   const sendMessage = (e) => {
     e.preventDefault();
@@ -19,7 +34,7 @@ const Chat = () => {
       <div className="chat_header">
         <Avatar />
         <div className="chat_headerInfo">
-          <h3>Room name</h3>
+          <h3>{roomName}</h3>
           <p>last seen at ...</p>
         </div>
         <div className="chat_headerRight">
